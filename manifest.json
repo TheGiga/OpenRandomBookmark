@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Open Random Bookmark",
+  "version": "1.0",
+  "description": "Opens a random bookmark from a folder.",
+  "icons": {
+    "48": "icons/RandomBookmark48.png",
+    "96": "icons/RandomBookmark96.png"
+  },
+  "permissions": [
+    "bookmarks"
+  ],
+  "browser_action": {
+    "default_icon": "icons/RandomBookmark48.png",
+    "default_title": "Open Random Bookmark",
+    "default_popup": "popup.html"
+  }
+}

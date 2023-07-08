@@ -1,0 +1,13 @@
+body {
+	font-family: "Open Sans", Arial, sans-serif;
+	padding: 8px;
+}
+
+#openBookmarkButton {
+	display: inline-block;
+	box-sizing: border-box;
+	margin: auto;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	width: 100%;
+}
