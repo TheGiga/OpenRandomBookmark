@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   openBookmarkButton.addEventListener('click', function() {
     getRandomBookmark(function(bookmark) {
       if (bookmark) {
-        chrome.tabs.create({ url: bookmark.url });
+        browser.tabs.create({ url: bookmark.url });
       } else {
         console.log('No bookmarks found.');
       }
@@ -20,7 +20,7 @@ function getRandomBookmark(callback) {
   var folderSelect = document.getElementById('folderSelect');
   var selectedFolderId = folderSelect.value;
   
-  chrome.bookmarks.getSubTree(selectedFolderId, function(bookmarkTree) {
+  browser.bookmarks.getSubTree(selectedFolderId, function(bookmarkTree) {
     var bookmarkFolder = bookmarkTree[0];
     var bookmarks = getAllBookmarks(bookmarkFolder, includeSubfolders);
     
@@ -55,15 +55,15 @@ function getAllBookmarks(bookmarkNode, includeSubfolders) {
 function populateFolderSelect() {
   var folderSelect = document.getElementById('folderSelect');
   folderSelect.addEventListener('change', function() {
-    chrome.storage.local.set({ 'selectedFolderId': folderSelect.value });
+    browser.storage.local.set({ 'selectedFolderId': folderSelect.value });
   });
 
-  chrome.bookmarks.getTree(function(bookmarkTree) {
+  browser.bookmarks.getTree(function(bookmarkTree) {
     var rootNode = bookmarkTree[0];
     populateFolderOptions(rootNode, folderSelect);
   });
 
-  chrome.storage.local.get('selectedFolderId', function(result) {
+  browser.storage.local.get('selectedFolderId', function(result) {
     if (result.selectedFolderId) {
       folderSelect.value = result.selectedFolderId;
     }
