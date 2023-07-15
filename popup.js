@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     getRandomBookmark(function(bookmark) {
       if (bookmark) {
         browser.tabs.create({ url: bookmark.url });
-      } else {
-        console.log('No bookmarks found.');
       }
     });
   });
@@ -35,21 +33,27 @@ function getRandomBookmark(callback) {
 }
 
 function getAllBookmarks(bookmarkNode, includeSubfolders) {
-  var bookmarks = [];
-
   function traverseBookmarks(bookmarkNode) {
+    var bookmarks = [];
+
     if (bookmarkNode.type === 'bookmark') {
       bookmarks.push(bookmarkNode);
     }
-    if (bookmarkNode.children && includeSubfolders) {
+    else if (bookmarkNode.type === 'folder' && bookmarkNode.children) {
       bookmarkNode.children.forEach(function(childNode) {
-        traverseBookmarks(childNode);
+        if (childNode.type === 'folder' && includeSubfolders) {
+          bookmarks.push(...traverseBookmarks(childNode));
+        }
+        else if (childNode.type === 'bookmark') {
+          bookmarks.push(childNode);
+        }
       });
     }
+
+    return bookmarks;
   }
 
-  traverseBookmarks(bookmarkNode);
-  return bookmarks;
+  return traverseBookmarks(bookmarkNode);
 }
 
 function populateFolderSelect() {
