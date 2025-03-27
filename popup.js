@@ -3,9 +3,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var openBookmarkButton = document.getElementById('openBookmarkButton');
   openBookmarkButton.addEventListener('click', function() {
-    getRandomBookmark(function(bookmark) {
-      if (bookmark) {
-        browser.tabs.create({ url: bookmark.url });
+    getRandomBookmark(function(bookmarks) {
+      console.log(bookmarks);
+
+      if (bookmarks) {
+
+        function open_tab(bookmark) {
+          browser.tabs.create({ url: bookmark.url })
+        }
+
+        bookmarks.forEach(open_tab);
       }
     });
   });
@@ -16,16 +23,31 @@ function getRandomBookmark(callback) {
   var includeSubfolders = includeSubfoldersCheckbox.checked;
 
   var folderSelect = document.getElementById('folderSelect');
+  var amountOfBookmarks = document.getElementById('numberOfBookmarks').value;
   var selectedFolderId = folderSelect.value;
   
   browser.bookmarks.getSubTree(selectedFolderId, function(bookmarkTree) {
     var bookmarkFolder = bookmarkTree[0];
     var bookmarks = getAllBookmarks(bookmarkFolder, includeSubfolders);
-    
+
+    var to_open = [];
+
+    if (amountOfBookmarks > bookmarks.length) {
+      amountOfBookmarks = bookmarks.length;
+    }
+
     if (bookmarks.length > 0) {
-      var randomIndex = Math.floor(Math.random() * bookmarks.length);
-      var randomBookmark = bookmarks[randomIndex];
-      callback(randomBookmark);
+      for (var i = 0; i < amountOfBookmarks; i++) {
+
+        var randomIndex = Math.floor(Math.random() * bookmarks.length);
+        var randomBookmark = bookmarks[randomIndex];
+
+        bookmarks.splice(randomIndex, 1);
+
+        to_open.push(randomBookmark);
+      }
+
+      callback(to_open);
     } else {
       callback(null);
     }
