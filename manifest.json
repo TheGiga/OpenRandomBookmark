@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Open Random Bookmark",
+  "name": "Open Random Bookmark, but you can choose how many",
   "version": "1.0.1",
-  "description": "Opens a random bookmark from a folder.",
+  "description": "Opens a set amount of random bookmarks from a folder.",
   "icons": {
     "48": "icons/RandomBookmark48.png",
     "96": "icons/RandomBookmark96.png"
